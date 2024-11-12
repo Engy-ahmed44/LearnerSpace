@@ -6,7 +6,6 @@ use App\Core\Controller;
 use App\Core\ControllerHelpers;
 
 use App\Auth\AuthManager;
-use App\Auth\Strategy\EmailStrategy;
 
 
 class UserController extends Controller
