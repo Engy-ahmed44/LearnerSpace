@@ -18,8 +18,6 @@ class EmailStrategy implements AuthenticationStrategy
 
     public function authenticate(): ?User
     {
-        // TODO: - hash
-
         return UserRepository::get()->findUserByEmailAndPassword($this->email, $this->password);
     }
 }
