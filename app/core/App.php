@@ -2,9 +2,12 @@
 
 namespace App;
 
+use App\Controllers\HomeController;
+use App\Core\Controller;
+
 class App
 {
-    protected $controller = 'HomeController';
+    protected Controller $controller;
     protected $method = 'index';
     protected $params = [];
 
@@ -23,8 +26,8 @@ class App
             unset($url[0]);
         } else {
             // Fallback to the default controller if the file doesn't exist
-            // require_once '../app/controllers/HomeController.php';
-            // $this->controller = new \App\Controllers\HomeController;
+            require_once '../app/controllers/HomeController.php';
+            $this->controller = new HomeController;
         }
 
         // Check if the method exists in the controller
@@ -36,6 +39,7 @@ class App
         // Set the parameters
         $this->params = $url ? array_values($url) : [];
 
+        $this->controller->onCall();
         // Call the controller method with parameters
         call_user_func_array([$this->controller, $this->method], $this->params);
     }

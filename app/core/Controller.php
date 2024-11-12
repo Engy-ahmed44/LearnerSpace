@@ -2,13 +2,14 @@
 
 namespace App\Core;
 
-class Controller
+abstract class Controller
 {
-    public function model($model)
-    {
-        require_once '../app/models/' . $model . '.php';
-        return new $model();
-    }
+
+    /**
+     * Called before the method is called.
+     */
+    public function onCall() {}
+
 
     public function view($view, $data = [])
     {
