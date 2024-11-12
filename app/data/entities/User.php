@@ -34,16 +34,18 @@ class User
     #[Column(type: 'datetime')]
     private \DateTime $updated_at;
 
-    public function __construct(string $email, string $password)
+    public function __construct(string $email, string $password, ?string $first_name,  ?string $last_name)
     {
         $this->email = $email;
         $this->password = $password;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
     }
 
-    // Getters and setters
-
+    // Getters
+    //
     public function getId(): int
     {
         return $this->id;
@@ -54,19 +56,9 @@ class User
         return $this->email;
     }
 
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
     public function getPassword(): string
     {
         return $this->password;
-    }
-
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
     }
 
     public function getFirstName(): ?string
@@ -74,19 +66,9 @@ class User
         return $this->first_name;
     }
 
-    public function setFirstName(?string $first_name): void
-    {
-        $this->first_name = $first_name;
-    }
-
     public function getLastName(): ?string
     {
         return $this->last_name;
-    }
-
-    public function setLastName(?string $last_name): void
-    {
-        $this->last_name = $last_name;
     }
 
     public function getCreatedAt(): \DateTime
@@ -94,18 +76,39 @@ class User
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTime $created_at): void
-    {
-        $this->created_at = $created_at;
-    }
-
     public function getUpdatedAt(): \DateTime
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTime $updated_at): void
+    // Setters
+    //
+    public function setEmail(string $email): void
     {
-        $this->updated_at = $updated_at;
+        $this->email = $email;
+        $this->setUpdatedAt();
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+        $this->setUpdatedAt();
+    }
+
+    public function setFirstName(?string $first_name): void
+    {
+        $this->first_name = $first_name;
+        $this->setUpdatedAt();
+    }
+
+    public function setLastName(?string $last_name): void
+    {
+        $this->last_name = $last_name;
+        $this->setUpdatedAt();
+    }
+
+    private function setUpdatedAt(): void
+    {
+        $this->updated_at = new \DateTime();
     }
 }
