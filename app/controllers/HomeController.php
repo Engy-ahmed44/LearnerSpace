@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\ControllerHelpers;
 
 use App\Auth\AuthManager;
+use App\View\Home\HomeView;
 
 class HomeController extends Controller
 {
@@ -19,6 +20,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        $this->view('home/index');
+        (new HomeView())->index("aaa");
     }
 }

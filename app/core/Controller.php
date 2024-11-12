@@ -10,7 +10,7 @@ abstract class Controller
      */
     public function onCall() {}
 
-
+    // TODO: - Remove this
     public function view($view, $data = [])
     {
         require_once '../app/views/' . $view . '.php';

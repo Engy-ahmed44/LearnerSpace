@@ -11,7 +11,8 @@
             "App\\": "app/",
             "App\\DB\\": "app/data/",
             "App\\DB\\Entity\\": "app/data/entities",
-            "App\\DB\\Repository\\": "app/data/repositories"
+            "App\\DB\\Repository\\": "app/data/repositories",
+            "App\\View\\": "app/views"
         }
     }
 }
