@@ -32,7 +32,7 @@ class Course
 	// #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reportedBugs')]
 	// private User $instructor;
 
-	public function __construct(string $name, string $description, User $instructor)
+	public function __construct(string $name, string $description)
 	{
 		$this->name = $name;
 		$this->description = $description;
