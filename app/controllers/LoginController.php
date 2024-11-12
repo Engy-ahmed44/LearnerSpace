@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\DB\DatabaseManager;
 use App\Core\Controller;
 use App\Core\ControllerHelpers;
+use App\DB\Repository\UserRepository;
 
 class LoginController extends Controller
 {
@@ -12,6 +13,8 @@ class LoginController extends Controller
     {
         // Render the login view
         $this->view('login/index');
+
+        var_dump(UserRepository::get()->findAll());
     }
 
     public function authenticate()

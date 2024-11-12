@@ -3,7 +3,6 @@
 namespace App\DB;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\ORMSetup;
 
