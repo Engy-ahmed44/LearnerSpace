@@ -17,9 +17,6 @@ class User
     private int $id;
 
     #[Column(type: 'string', length: 255, unique: true)]
-    private string $username;
-
-    #[Column(type: 'string', length: 255, unique: true)]
     private string $email;
 
     #[Column(type: 'string', length: 255)]
@@ -37,9 +34,8 @@ class User
     #[Column(type: 'datetime')]
     private \DateTime $updated_at;
 
-    public function __construct(string $username, string $email, string $password)
+    public function __construct(string $email, string $password)
     {
-        $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->created_at = new \DateTime();
@@ -51,16 +47,6 @@ class User
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
     }
 
     public function getEmail(): string

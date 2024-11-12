@@ -4,6 +4,8 @@ namespace App\DB\Repository;
 
 use App\DB\Entity\User;
 use App\DB\Repository\BaseRepository;
+use Doctrine\ORM\NoResultException;
+use Exception;
 
 class UserRepository extends BaseRepository
 {
@@ -17,41 +19,64 @@ class UserRepository extends BaseRepository
         return User::class;
     }
 
-    // MARK: - 
-
-    public function getRecentBugs($number = 30)
+    /**
+     * Find a user by email and password (hashed password should be checked).
+     *
+     * @param string $email The user's email.
+     * @param string $password The plain text password.
+     *
+     * @return User|null The user entity if found and password matches, null otherwise.
+     */
+    public function findUserByEmailAndPassword(string $email, string $password): ?User
     {
-        $dql = "SELECT b, e, r FROM Bug b JOIN b.engineer e JOIN b.reporter r ORDER BY b.created DESC";
+        // Create the QueryBuilder
+        $qb = $this->createQueryBuilder('u');
 
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setMaxResults($number);
-        return $query->getResult();
+        // Build the query with email check
+        $qb->where('u.email = :email')
+            ->setParameter('email', $email);
+
+        try {
+            $user = $qb->getQuery()->getSingleResult();
+
+            // Check if the password matches (assuming the password is hashed)
+            if (password_verify($password, $user->getPassword())) {
+                return $user;
+            }
+        } catch (NoResultException $e) {
+            echo "dsds";
+            return null; // No user found
+        }
+
+        return null; // Password doesn't match or user doesn't exist
     }
 
-    public function getRecentBugsArray($number = 30)
+    /**
+     * Registers a new user.
+     *
+     * @param string $email
+     * @param string $password
+     * @return User
+     * @throws Exception
+     */
+    public function register(string $email, string $password): User
     {
-        $dql = "SELECT b, e, r, p FROM Bug b JOIN b.engineer e " .
-            "JOIN b.reporter r JOIN b.products p ORDER BY b.created DESC";
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setMaxResults($number);
-        return $query->getArrayResult();
-    }
+        // Check if the email already exists in the database
+        $existingUser = $this->findOneBy(['email' => $email]);
+        if ($existingUser) {
+            throw new Exception('Email is already taken.');
+        }
 
-    public function getUsersBugs($userId, $number = 15)
-    {
-        $dql = "SELECT b, e, r FROM Bug b JOIN b.engineer e JOIN b.reporter r " .
-            "WHERE b.status = 'OPEN' AND e.id = ?1 OR r.id = ?1 ORDER BY b.created DESC";
+        // Create a new User instance
+        $user = new User(
+            $email,
+            password_hash($password, PASSWORD_BCRYPT)
+        );
 
-        return $this->getEntityManager()->createQuery($dql)
-            ->setParameter(1, $userId)
-            ->setMaxResults($number)
-            ->getResult();
-    }
+        // Persist the new user to the database
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
 
-    public function getOpenBugsByProduct()
-    {
-        $dql = "SELECT p.id, p.name, count(b.id) AS openBugs FROM Bug b " .
-            "JOIN b.products p WHERE b.status = 'OPEN' GROUP BY p.id";
-        return $this->getEntityManager()->createQuery($dql)->getScalarResult();
+        return $user; // Return the newly registered user
     }
 }

@@ -3,7 +3,7 @@
 namespace App\DB\Repository;
 
 use App\DB\DatabaseManager;
-
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -14,7 +14,7 @@ abstract class BaseRepository extends EntityRepository
     /**
      * Get the repository instance based on the entity manager
      * 
-     * @return self<T>
+     * @return static<T>
      */
     public static function get()
     {
