@@ -2,13 +2,15 @@
 
 namespace App\DB;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\ORMSetup;
 
 class DatabaseManager
 {
     private static $instance = null;
-    private Connection $connection;
+    private EntityManager $entityManager;
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -24,7 +26,13 @@ class DatabaseManager
             'driver' => $env['DB_DRIVER'] ?? 'pdo_mysql',
         ];
 
-        $this->connection = DriverManager::getConnection($config);
+        $ORMConfig = ORMSetup::createAttributeMetadataConfiguration(
+            paths: [__DIR__ . '/entities'],
+            isDevMode: true,
+        );
+
+        $connection = DriverManager::getConnection($config, $ORMConfig);
+        $this->entityManager = new EntityManager($connection, $ORMConfig);
     }
 
     /**
@@ -44,10 +52,10 @@ class DatabaseManager
     /**
      * Get the underlying Doctrine DBAL Connection instance.
      *
-     * @return Connection
+     * @return EntityManager
      */
-    public function getConnection(): Connection
+    public function getEntityManager(): EntityManager
     {
-        return $this->connection;
+        return $this->entityManager;
     }
 }
