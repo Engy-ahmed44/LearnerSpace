@@ -24,7 +24,11 @@ class UserController extends Controller
 
     public function logout()
     {
-        AuthManager::getInstance()->logout();
-        ControllerHelpers::redirect('home');
+        if (ControllerHelpers::isPost()) {
+            AuthManager::getInstance()->logout();
+            ControllerHelpers::redirect('home');
+        } else {
+            $this->index();
+        }
     }
 }
