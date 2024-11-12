@@ -44,7 +44,6 @@ class UserRepository extends BaseRepository
                 return $user;
             }
         } catch (NoResultException $e) {
-            echo "dsds";
             return null; // No user found
         }
 

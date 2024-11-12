@@ -84,8 +84,7 @@ class AuthManager
      */
     public function isAuthenticated(): bool
     {
-        $token = $_SESSION['access_token'];
-        // TODO: - Check if the token expired
-        return !is_null($token);
+        // TODO:  -Chech if token expired
+        return isset($_SESSION['access_token']);
     }
 }

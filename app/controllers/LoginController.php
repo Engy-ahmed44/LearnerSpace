@@ -2,53 +2,47 @@
 
 namespace App\Controllers;
 
-use App\DB\DatabaseManager;
 use App\Core\Controller;
 use App\Core\ControllerHelpers;
-use App\DB\Repository\UserRepository;
+
+use App\Auth\AuthManager;
+use App\Auth\Strategy\EmailStrategy;
+
 
 class LoginController extends Controller
 {
+    public function onCall()
+    {
+        if (AuthManager::getInstance()->isAuthenticated()) {
+            ControllerHelpers::redirect('dashboard');
+        }
+    }
+
     public function index()
     {
         // Render the login view
         $this->view('login/index');
-
-        var_dump(UserRepository::get()->findAll());
     }
 
     public function authenticate()
     {
         if (ControllerHelpers::isPost()) {
             // Get sanitized input data
-            $username = ControllerHelpers::post('username');
+            $email = ControllerHelpers::post('email');
             $password = ControllerHelpers::post('password');
 
-            $userModel = $this->model('User');
-            $user = $userModel->login($username, $password);
+            $strategy = new EmailStrategy($email, $password);
 
-            if ($user) {
-                // Set session data
-                $_SESSION['user_id'] = $user->id;
-                $_SESSION['username'] = $user->username;
+            $success = AuthManager::getInstance()->setStrategy($strategy)->authenticate();
 
-                // Redirect to home page
-                ControllerHelpers::redirect('/home');
+            if ($success) {
+                ControllerHelpers::redirect('dashboard');
             } else {
-                // Load login view with an error message
                 $this->view('login/index', ['error' => 'Invalid username or password.']);
             }
         } else {
             // Redirect if not a POST request
-            ControllerHelpers::redirect('/login');
+            ControllerHelpers::redirect('login');
         }
-    }
-
-    public function logout()
-    {
-        // Clear user session and redirect to login
-        session_unset();
-        session_destroy();
-        ControllerHelpers::redirect('/login');
     }
 }
