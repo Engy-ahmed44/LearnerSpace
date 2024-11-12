@@ -1,5 +1,11 @@
 <?php
 
+namespace App\Controllers;
+
+use App\DB\DatabaseManager;
+use App\Core\Controller;
+use App\Core\ControllerHelpers;
+
 class LoginController extends Controller
 {
     public function index()
