@@ -78,4 +78,15 @@ class UserRepository extends BaseRepository
 
         return $user; // Return the newly registered user
     }
+
+    /**
+     * Find a user by their ID.
+     *
+     * @param int $id The ID of the user to find.
+     * @return User|null Returns the User entity or null if not found.
+     */
+    public function findUserById(int $id): ?User
+    {
+        return $this->find($id);
+    }
 }

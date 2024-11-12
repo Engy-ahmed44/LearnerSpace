@@ -59,7 +59,7 @@ class JWTHelper
             $decoded = JWT::decode($jwt, new Key(self::$secretKey, self::$algorithm));
 
             // Ensure the return type is a stdClass object
-            return (object) $decoded; // This casts the decoded array into an object if necessary
+            return $decoded; // This casts the decoded array into an object if necessary
         } catch (Exception $e) {
             // Handle errors related to the token
             throw new Exception('Invalid or expired token: ' . $e->getMessage());

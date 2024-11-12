@@ -3,11 +3,12 @@
 namespace App\Auth;
 
 use App\Auth\Strategy\AuthenticationStrategy;
+use App\DB\Entity\User;
+use App\DB\Repository\UserRepository;
 
 class AuthManager
 {
     private static ?AuthManager $instance = null;
-    private ?array $user = null;
     private AuthenticationStrategy $authStrategy;
 
     /**
@@ -18,7 +19,6 @@ class AuthManager
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        $this->user = $_SESSION['user'] ?? null;  // Check session for user data
     }
 
     /**
@@ -68,15 +68,21 @@ class AuthManager
 
         session_unset();
         session_destroy();
-        $this->user = null;
     }
 
     /**
      * Get the current authenticated user.
      */
-    public function getUser(): ?array
+    public function getUser(): ?User
     {
-        return $this->user;
+        if (isset($_SESSION['access_token'])) {
+            $token = $_SESSION['access_token'];
+            $payload = JWTHelper::validateToken($token);
+
+            return UserRepository::get()->findUserById($payload->user_id);
+        }
+
+        return null;
     }
 
     /**
