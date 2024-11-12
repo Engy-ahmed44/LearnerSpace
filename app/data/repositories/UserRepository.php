@@ -69,7 +69,9 @@ class UserRepository extends BaseRepository
         // Create a new User instance
         $user = new User(
             $email,
-            password_hash($password, PASSWORD_BCRYPT)
+            password_hash($password, PASSWORD_BCRYPT),
+            null,
+            null
         );
 
         // Persist the new user to the database
