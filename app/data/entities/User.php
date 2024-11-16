@@ -7,8 +7,11 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 
-#[ORM\Entity(repositoryClass: 'App\DB\Repository\UserRepository')]
 #[ORM\Table(name: 'users')]
+#[ORM\Entity]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['tutor' => Tutor::class, 'student' => Student::class])]
 class User
 {
     #[Id]

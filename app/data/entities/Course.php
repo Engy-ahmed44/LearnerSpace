@@ -2,6 +2,7 @@
 
 namespace App\DB\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
@@ -11,90 +12,49 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 #[ORM\Table(name: 'courses')]
 class Course
 {
-	#[Id]
-	#[GeneratedValue(strategy: 'AUTO')]
-	#[Column(type: 'integer')]
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column(type: "integer")]
 	private int $id;
 
-	#[Column(type: 'string', length: 100)]
-	private string $name;
+	#[ORM\Column(type: "string", length: 255)]
+	private string $title;
 
-	#[Column(type: 'string', length: 512, nullable: true)]
-	private ?string $description;
+	#[ORM\ManyToOne(targetEntity: Tutor::class, inversedBy: "courses")]
+	#[ORM\JoinColumn(nullable: false)]
+	private $tutor;
 
-	#[Column(type: 'datetime')]
-	private \DateTime $created_at;
+	#[ORM\ManyToMany(targetEntity: Student::class, mappedBy: "enrolledCourses")]
+	private $students;
 
-	#[Column(type: 'datetime')]
-	private \DateTime $updated_at;
+	#[ORM\OneToMany(mappedBy: "course", targetEntity: CourseContent::class)]
+	private $content;
 
-	// TBD
-	// #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reportedBugs')]
-	// private User $instructor;
-
-	public function __construct(string $name, string $description)
+	public function __construct()
 	{
-		$this->name = $name;
-		$this->description = $description;
-		// $this->instructor = $instructor;
-		$this->created_at = new \DateTime();
-		$this->updated_at = new \DateTime();
+		$this->students = new ArrayCollection();
+		$this->content = new ArrayCollection();
 	}
+}
 
-	// Getters
-	//
-	public function getId(): int
-	{
-		return $this->id;
-	}
+#[ORM\Table(name: 'courses_contents')]
+#[ORM\Entity]
+class CourseContent
+{
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column(type: "integer")]
+	private int $id;
 
-	public function getCreatedAt(): \DateTime
-	{
-		return $this->created_at;
-	}
+	#[ORM\Column(type: "string", length: 255)]
+	private string $title;
 
-	public function getUpdatedAt(): \DateTime
-	{
-		return $this->updated_at;
-	}
+	#[ORM\Column(type: "text")]
+	private string $content;
 
-	public function getName(): string
-	{
-		return $this->name;
-	}
+	#[ORM\ManyToOne(targetEntity: Course::class, inversedBy: "content")]
+	#[ORM\JoinColumn(nullable: false)]
+	private $course;
 
-	public function getDescription(): string
-	{
-		return $this->description;
-	}
-
-	// TBD
-	// public function getInstructor(): User
-	// {
-	// 	return $this->instructor;
-	// }
-
-	// Setters
-	//
-	public function setUpdatedAt(): void
-	{
-		$this->updated_at = new \DateTime();
-	}
-
-	public function setName(string $name): void
-	{
-		$this->name = $name;
-		$this->setUpdatedAt();
-	}
-
-	public function setDescription(string $description): void
-	{
-		$this->description = $description;
-	}
-
-	// TBD
-	// public function setInstructor(User $instructor): void
-	// {
-	// 	$this->instructor = $instructor;
-	// }
+	// Getters and setters...
 }
