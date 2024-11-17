@@ -18,6 +18,9 @@ class Course
 	#[ORM\Column(type: "string", length: 255)]
 	private string $title;
 
+	#[ORM\Column(type: "text", nullable: true)]
+	private ?string $description;
+
 	#[ORM\ManyToOne(targetEntity: Tutor::class, inversedBy: "courses")]
 	#[ORM\JoinColumn(nullable: false)]
 	private Tutor $tutor;
@@ -28,10 +31,43 @@ class Course
 	#[ORM\OneToMany(mappedBy: "course", targetEntity: CourseContent::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
 	private Collection $content;
 
-	public function __construct()
+	public function __construct(string $title, Tutor $tutor, string $description)
 	{
+		$this->title = $title;
+		$this->tutor = $tutor;
+		$this->description = $description;
 		$this->students = new ArrayCollection();
 		$this->content = new ArrayCollection();
+	}
+
+	// Getter for ID
+	public function getId(): int
+	{
+		return $this->id;
+	}
+
+	// Getter for Title
+	public function getTitle(): string
+	{
+		return $this->title;
+	}
+
+	// Getter for Description
+	public function getDescription(): ?string
+	{
+		return $this->description;
+	}
+
+	// Getter for Tutor
+	public function getTutor(): Tutor
+	{
+		return $this->tutor;
+	}
+
+	// Getter for Students (Collection)
+	public function getStudents(): Collection
+	{
+		return $this->students;
 	}
 
 	/**

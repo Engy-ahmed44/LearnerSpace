@@ -21,6 +21,11 @@ class DashboardView extends View
         <body>
             <h1>Welcome to the Dashboard</h1>
 
+            <!-- Logout Button -->
+            <form action="/LearnerSpace/user/logout" method="POST">
+                <button type="submit">Logout</button>
+            </form>
+
             <h2>Your Courses</h2>
             <?php if (empty($courses)): ?>
                 <p>You don't have any courses yet.</p>

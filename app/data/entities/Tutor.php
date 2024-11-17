@@ -3,6 +3,7 @@
 namespace App\DB\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
@@ -25,9 +26,9 @@ class Tutor extends User
     /**
      * Get the courses associated with this tutor.
      *
-     * @return ArrayCollection|Course[]
+     * @return Collection|Course[]
      */
-    public function getCourses(): ArrayCollection
+    public function getCourses(): Collection
     {
         return $this->courses;
     }
