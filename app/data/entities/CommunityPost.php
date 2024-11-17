@@ -6,7 +6,7 @@ use App\DB\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'community_posts')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: 'App\DB\Repository\CommunityPostRepository')]
 class CommunityPost
 {
     #[ORM\Id]

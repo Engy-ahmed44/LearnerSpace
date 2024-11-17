@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 
 #[ORM\Table(name: 'tutors')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: 'App\DB\Repository\TutorRepository')]
 class Tutor extends User
 {
 
@@ -18,6 +18,7 @@ class Tutor extends User
 
     public function __construct()
     {
+        parent::__construct();
         $this->courses = new ArrayCollection();
     }
 

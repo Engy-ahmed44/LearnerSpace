@@ -26,32 +26,28 @@ class TutorRepository extends UserRepository
     /**
      * Registers a new user.
      *
-     * @param string $email
-     * @param string $password
+     * @param Tutor $tutor
      * @return Tutor
      * @throws Exception
      */
-    public function register(string $email, string $password): Tutor
+    public function register(Tutor $tutor): Tutor
     {
         // Check if the email already exists in the database
-        $existingUser = $this->findOneBy(['email' => $email]);
+        $existingUser = $this->findOneBy(['email' => $tutor->getEmail()]);
         if ($existingUser) {
             throw new Exception('Email is already taken.');
         }
 
         // Create a new User instance
-        $user = new User(
-            $email,
-            password_hash($password, PASSWORD_BCRYPT),
-            null,
-            null
+        $tutor->setPassword(
+            password_hash($tutor->getPassword(), PASSWORD_BCRYPT)
         );
 
         // Persist the new user to the database
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->persist($tutor);
         $this->getEntityManager()->flush();
 
-        return $user; // Return the newly registered user
+        return $tutor; // Return the newly registered user
     }
 
     /**

@@ -27,32 +27,28 @@ class StudentRepository extends UserRepository
     /**
      * Registers a new user.
      *
-     * @param string $email
-     * @param string $password
+     * @param Student $student
      * @return Student
      * @throws Exception
      */
-    public function register(string $email, string $password): Student
+    public function register(Student $student): Student
     {
         // Check if the email already exists in the database
-        $existingUser = $this->findOneBy(['email' => $email]);
+        $existingUser = $this->findOneBy(['email' => $student->getEmail()]);
         if ($existingUser) {
             throw new Exception('Email is already taken.');
         }
 
         // Create a new User instance
-        $user = new User(
-            $email,
-            password_hash($password, PASSWORD_BCRYPT),
-            null,
-            null
+        $student->setPassword(
+            password_hash($student->getPassword(), PASSWORD_BCRYPT)
         );
 
         // Persist the new user to the database
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->persist($student);
         $this->getEntityManager()->flush();
 
-        return $user; // Return the newly registered user
+        return $student; // Return the newly registered user
     }
 
     /**

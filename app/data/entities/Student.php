@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'students')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: 'App\DB\Repository\StudentRepository')]
 class Student extends User
 {
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: "students")]
@@ -15,6 +15,7 @@ class Student extends User
 
     public function __construct()
     {
+        parent::__construct();
         $this->enrolledCourses = new ArrayCollection();
     }
 

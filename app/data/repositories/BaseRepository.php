@@ -14,7 +14,7 @@ abstract class BaseRepository extends EntityRepository
     /**
      * Get the repository instance based on the entity manager
      * 
-     * @return static<T>
+     * @return static
      */
     public static function get()
     {

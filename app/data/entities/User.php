@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 
 #[ORM\Table(name: 'users')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: 'App\DB\Repository\UserRepository')]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
 #[ORM\DiscriminatorMap(['tutor' => Tutor::class, 'student' => Student::class])]
@@ -37,12 +37,8 @@ class User
     #[Column(type: 'datetime')]
     private \DateTime $updated_at;
 
-    public function __construct(string $email, string $password, ?string $first_name,  ?string $last_name)
+    public function __construct()
     {
-        $this->email = $email;
-        $this->password = $password;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
     }

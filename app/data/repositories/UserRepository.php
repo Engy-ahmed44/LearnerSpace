@@ -44,37 +44,6 @@ abstract class UserRepository extends BaseRepository
     }
 
     /**
-     * Registers a new user.
-     *
-     * @param string $email
-     * @param string $password
-     * @return T
-     * @throws Exception
-     */
-    public function register(string $email, string $password): object
-    {
-        // Check if the email already exists in the database
-        $existingUser = $this->findOneBy(['email' => $email]);
-        if ($existingUser) {
-            throw new Exception('Email is already taken.');
-        }
-
-        // Create a new User instance
-        $user = new User(
-            $email,
-            password_hash($password, PASSWORD_BCRYPT),
-            null,
-            null
-        );
-
-        // Persist the new user to the database
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
-
-        return $user; // Return the newly registered user
-    }
-
-    /**
      * Find a user by their ID.
      *
      * @param int $id The ID of the user to find.
