@@ -160,6 +160,9 @@ class CourseContent
 	#[ORM\JoinColumn(nullable: false)]
 	private Course $course;
 
+	#[ORM\ManyToMany(targetEntity: Tag::class)]
+	private Collection $tags;
+
 	public function __construct(string $title, string $content, Course $course)
 	{
 		$this->title = $title;
