@@ -11,23 +11,54 @@ class CommunityPost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $title;
+
+    #[ORM\Column(type: 'text')]
     private string $content;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $author;
+    #[ORM\ManyToOne(targetEntity: 'User')]
+    #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
+    private User $author;
 
-    #[ORM\Column(type: "datetime")]
-    private \DateTimeInterface $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    private \DateTime $createdAt;
 
-    public function __construct()
+    // Constructor
+    public function __construct(string $title, string $content, User $author)
     {
-        $this->createdAt = new \DateTime();
+        $this->title = $title;
+        $this->content = $content;
+        $this->author = $author;
+        $this->createdAt = new \DateTime(); // Set current datetime as the creation time
     }
 
-    // Getters and setters...
+    // Getters
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    public function getAuthor(): User
+    {
+        return $this->author;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
 }

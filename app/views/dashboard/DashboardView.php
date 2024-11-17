@@ -43,7 +43,8 @@ class DashboardView extends View
             <?php else: ?>
                 <ul>
                     <?php foreach ($events as $event): ?>
-                        <li><?php echo htmlspecialchars($event->getTitle()) . ' - ' . htmlspecialchars($event->getDate()); ?></li>
+                        <li><?php echo htmlspecialchars($event->getTitle()) . ' - ' . htmlspecialchars($event->getCreatedAt()->format('F j, Y, g:i a')); ?></li>
+                        <!-- Formatting DateTime: 'F j, Y, g:i a' will display: "September 20, 2024, 3:30 pm" -->
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
@@ -54,7 +55,8 @@ class DashboardView extends View
             <?php else: ?>
                 <ul>
                     <?php foreach ($communityPosts as $post): ?>
-                        <li><?php echo htmlspecialchars($post->getTitle()) . ' - ' . htmlspecialchars($post->getDate()); ?></li>
+                        <li><?php echo htmlspecialchars($post->getTitle()) . ' - ' . htmlspecialchars($post->getCreatedAt()->format('F j, Y, g:i a')); ?></li>
+                        <!-- Formatting DateTime: 'F j, Y, g:i a' will display: "September 20, 2024, 3:30 pm" -->
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>

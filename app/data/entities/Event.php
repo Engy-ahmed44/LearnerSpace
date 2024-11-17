@@ -18,7 +18,7 @@ class Event
     private string $name;
 
     #[ORM\Column(type: "datetime")]
-    private \DateTimeInterface $date;
+    private \DateTime $date;
 
     #[ORM\ManyToOne(targetEntity: Course::class)]
     #[ORM\JoinColumn(nullable: false)]
