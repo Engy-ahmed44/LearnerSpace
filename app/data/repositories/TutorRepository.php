@@ -53,4 +53,15 @@ class TutorRepository extends UserRepository
 
         return $user; // Return the newly registered user
     }
+
+    /**
+     * Get courses created by a tutor.
+     *
+     * @param Tutor $tutor
+     * @return Course[]
+     */
+    public function getCourses(Tutor $tutor): array
+    {
+        return $tutor->getCourses()->toArray();
+    }
 }

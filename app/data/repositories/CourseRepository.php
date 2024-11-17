@@ -3,8 +3,6 @@
 namespace App\DB\Repository;
 
 use App\DB\Entity\Course;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends BaseRepository<Course>
@@ -21,11 +19,6 @@ class CourseRepository extends BaseRepository
 		return Course::class;
 	}
 
-	public function __construct(ManagerRegistry $registry)
-	{
-		parent::__construct($registry, Course::class);
-	}
-
 	/**
 	 * Find courses by a partial name.
 	 *
@@ -40,6 +33,27 @@ class CourseRepository extends BaseRepository
 			->getQuery()
 			->getResult();
 	}
+	/**
+	 * Create a new course.
+	 *
+	 * @param Course $course
+	 */
+	public function create(Course $course): void
+	{
+		$this->getEntityManager()->persist($course);
+		$this->getEntityManager()->flush();
+	}
+
+	/**
+	 * Delete a course.
+	 *
+	 * @param Course $course
+	 */
+	public function delete(Course $course): void
+	{
+		$this->getEntityManager()->remove($course);
+		$this->getEntityManager()->flush();
+	}
 
 	/**
 	 * Get all courses ordered by creation date.
@@ -49,7 +63,7 @@ class CourseRepository extends BaseRepository
 	public function findAllOrderedByCreatedAt(): array
 	{
 		return $this->createQueryBuilder('c')
-			->orderBy('c.created_at', 'ASC')
+			->orderBy('c.createdAt', 'ASC')
 			->getQuery()
 			->getResult();
 	}

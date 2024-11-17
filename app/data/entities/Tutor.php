@@ -20,4 +20,14 @@ class Tutor extends User
     {
         $this->courses = new ArrayCollection();
     }
+
+    /**
+     * Get the courses associated with this tutor.
+     *
+     * @return ArrayCollection|Course[]
+     */
+    public function getCourses(): ArrayCollection
+    {
+        return $this->courses;
+    }
 }

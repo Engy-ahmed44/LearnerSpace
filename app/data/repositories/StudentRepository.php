@@ -2,6 +2,7 @@
 
 namespace App\DB\Repository;
 
+use App\DB\Entity\Course;
 use App\DB\Entity\Student;
 use App\DB\Entity\User;
 use App\DB\Repository\BaseRepository;
@@ -52,5 +53,28 @@ class StudentRepository extends UserRepository
         $this->getEntityManager()->flush();
 
         return $user; // Return the newly registered user
+    }
+
+    /**
+     * Enroll a student in a course.
+     *
+     * @param Student $student
+     * @param Course $course
+     */
+    public function enrollInCourse(Student $student, Course $course): void
+    {
+        $student->getEnrolledCourses()->add($course);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Get courses a student is enrolled in.
+     *
+     * @param Student $student
+     * @return Course[]
+     */
+    public function getEnrolledCourses(Student $student): array
+    {
+        return $student->getEnrolledCourses()->toArray();
     }
 }
