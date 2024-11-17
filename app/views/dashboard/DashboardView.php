@@ -43,7 +43,7 @@ class DashboardView extends View
             <?php else: ?>
                 <ul>
                     <?php foreach ($events as $event): ?>
-                        <li><?php echo htmlspecialchars($event->getTitle()) . ' - ' . htmlspecialchars($event->getCreatedAt()->format('F j, Y, g:i a')); ?></li>
+                        <li><?php echo htmlspecialchars($event->getName()) . ' - ' . htmlspecialchars($event->getDate()->format('F j, Y, g:i a')); ?></li>
                         <!-- Formatting DateTime: 'F j, Y, g:i a' will display: "September 20, 2024, 3:30 pm" -->
                     <?php endforeach; ?>
                 </ul>

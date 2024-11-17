@@ -40,7 +40,7 @@ class DashboardController extends Controller
         }
 
         // Get the latest events for these courses
-        $events = EventRepository::get()->findLatestByCourses($courses);
+        $events = EventRepository::get()->findLatestByCourses();
 
         // Get the latest community posts
         $communityPosts = CommunityPostRepository::get()->findLatestPosts();

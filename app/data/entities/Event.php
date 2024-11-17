@@ -20,7 +20,28 @@ class Event
     #[ORM\Column(type: "datetime")]
     private \DateTime $date;
 
-    #[ORM\ManyToOne(targetEntity: Course::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $course;
+    // Constructor to initialize the object
+    public function __construct(string $name, \DateTime $date)
+    {
+        $this->name = $name;
+        $this->date = $date;
+    }
+
+    // Getter for id
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    // Getter for name
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    // Getter for date
+    public function getDate(): \DateTime
+    {
+        return $this->date;
+    }
 }

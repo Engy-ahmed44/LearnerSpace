@@ -36,11 +36,9 @@ class EventRepository extends BaseRepository
         $this->getEntityManager()->flush();
     }
 
-    public function findLatestByCourses(Collection $courses): array
+    public function findLatestByCourses(): array
     {
         return $this->createQueryBuilder('e')
-            ->where('e.course IN (:courses)')
-            ->setParameter('courses', $courses)
             ->orderBy('e.date', 'DESC')
             ->setMaxResults(5) // Fetch only the latest 5 events
             ->getQuery()
