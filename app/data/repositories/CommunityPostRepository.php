@@ -2,7 +2,7 @@
 
 namespace App\DB\Repository;
 
-use App\Entity\CommunityPost;
+use App\DB\Entity\CommunityPost;
 
 /**
  * @extends BaseRepository<CommunityPost>
@@ -44,6 +44,15 @@ class CommunityPostRepository extends BaseRepository
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findLatestPosts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults(5) // Fetch only the latest 5 posts
             ->getQuery()
             ->getResult();
     }

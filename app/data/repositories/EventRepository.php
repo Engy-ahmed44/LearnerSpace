@@ -2,7 +2,8 @@
 
 namespace App\DB\Repository;
 
-use App\Entity\Event;
+use App\DB\Entity\Event;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @extends BaseRepository<Event>
@@ -33,5 +34,16 @@ class EventRepository extends BaseRepository
     public function update(Event $event): void
     {
         $this->getEntityManager()->flush();
+    }
+
+    public function findLatestByCourses(Collection $courses): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.course IN (:courses)')
+            ->setParameter('courses', $courses)
+            ->orderBy('e.date', 'DESC')
+            ->setMaxResults(5) // Fetch only the latest 5 events
+            ->getQuery()
+            ->getResult();
     }
 }

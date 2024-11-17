@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\DB\Entity;
 
 use App\DB\Entity\Course;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +23,4 @@ class Event
     #[ORM\ManyToOne(targetEntity: Course::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $course;
-
-    // Getters and setters...
 }
