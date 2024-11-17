@@ -2,7 +2,10 @@
 
 namespace App\Auth\Strategy;
 
+use App\DB\Entity\Student;
 use App\DB\Entity\User;
+use App\DB\Repository\StudentRepository;
+use App\DB\Repository\TutorRepository;
 use App\DB\Repository\UserRepository;
 
 class EmailStrategy implements AuthenticationStrategy

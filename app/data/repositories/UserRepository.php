@@ -10,8 +10,18 @@ use Exception;
 /**
  * @template T of object
  */
-abstract class UserRepository extends BaseRepository
+class UserRepository extends BaseRepository
 {
+    /**
+     * Get the entity class associated with this repository
+     *
+     * @return string
+     */
+    protected static function getEntityClass()
+    {
+        return User::class;
+    }
+
     /**
      * Find a user by email and password (hashed password should be checked).
      *

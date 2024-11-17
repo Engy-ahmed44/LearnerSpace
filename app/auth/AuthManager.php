@@ -3,6 +3,7 @@
 namespace App\Auth;
 
 use App\Auth\Strategy\AuthenticationStrategy;
+use App\Auth\Strategy\UserType;
 use App\DB\Entity\User;
 use App\DB\Repository\UserRepository;
 
