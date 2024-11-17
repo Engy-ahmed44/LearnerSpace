@@ -10,6 +10,8 @@ use App\DB\Entity\Tutor;
 use App\DB\Repository\EventRepository;
 use App\DB\Repository\CommunityPostRepository;
 use App\View\Dashboard\DashboardView;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class DashboardController extends Controller
 {
@@ -34,7 +36,7 @@ class DashboardController extends Controller
             // If the user is a Student, show the courses they are enrolled in
             $courses = $user->getEnrolledCourses();
         } else {
-            $courses = [];
+            $courses = new ArrayCollection();
         }
 
         // Get the latest events for these courses

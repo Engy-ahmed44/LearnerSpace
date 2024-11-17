@@ -27,8 +27,12 @@ class DatabaseManager
 
         $ORMConfig = ORMSetup::createAttributeMetadataConfiguration(
             paths: [__DIR__ . '/entities'],
-            isDevMode: true,
+            isDevMode: true
         );
+
+        $ORMConfig->setProxyDir('/Applications/XAMPP/xamppfiles/htdocs/LearnerSpace/app/data/DoctrineORMModule/Proxy');
+        $ORMConfig->setProxyNamespace('App\Proxy');
+        $ORMConfig->setAutoGenerateProxyClasses(true);
 
         $connection = DriverManager::getConnection($config, $ORMConfig);
         $this->entityManager = new EntityManager($connection, $ORMConfig);
