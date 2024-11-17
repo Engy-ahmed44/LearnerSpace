@@ -7,6 +7,7 @@ use App\Core\ControllerHelpers;
 
 use App\Auth\AuthManager;
 use App\Auth\Strategy\EmailStrategy;
+use App\View\Common\BaseSkeletonView;
 use App\View\Login\LoginView;
 
 class LoginController extends Controller
@@ -23,14 +24,15 @@ class LoginController extends Controller
 
     /**
      * Show the login form.
+     * /LearnerSpace/login
      */
     public function index()
     {
         if (ControllerHelpers::isPost()) {
             $this->login();
         } else {
-            // Show the login form by calling the static method from LoginView
-            LoginView::showLoginForm();
+            $baseView = new LoginView();
+            (new BaseSkeletonView("Login", $baseView))->render();
         }
     }
 
@@ -55,8 +57,8 @@ class LoginController extends Controller
                 // Redirect to the dashboard or a secure page
                 ControllerHelpers::redirect('dashboard');
             } else {
-                // Show login form with error message
-                LoginView::showLoginForm(['error' => 'Invalid email or password.']);
+                $baseView = new LoginView('Invalid email or password.');
+                (new BaseSkeletonView("Login", $baseView))->render();
             }
         } else {
             // Redirect if not a POST request

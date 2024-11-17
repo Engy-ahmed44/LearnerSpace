@@ -7,8 +7,9 @@ use App\Core\Controller;
 use App\Core\ControllerHelpers;
 use App\DB\Entity\Event;
 use App\DB\Repository\EventRepository;
-use App\View\CreateEvent\CreateEventView;
 use App\DB\Entity\Tutor; // Assuming the creator must be a Tutor
+use App\View\Common\BaseSkeletonView;
+use App\View\Event\CreateEventView;
 
 class CreateEventController extends Controller
 {
@@ -33,7 +34,8 @@ class CreateEventController extends Controller
      */
     public function index()
     {
-        CreateEventView::index(); // Display the view for creating an event
+        $baseView = new CreateEventView();
+        (new BaseSkeletonView("Create New Course", $baseView))->render();
     }
 
     /**

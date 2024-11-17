@@ -6,7 +6,8 @@ use App\Auth\AuthManager;
 use App\Core\Controller;
 use App\Core\ControllerHelpers;
 use App\DB\Repository\CourseRepository;
-use App\View\CourseDetails\CourseDetailsView;
+use App\View\Common\BaseSkeletonView;
+use App\View\Course\CourseDetailsView;
 
 class CourseDetailsController extends Controller
 {
@@ -33,7 +34,7 @@ class CourseDetailsController extends Controller
             ControllerHelpers::redirect('dashboard'); // Redirect if course not found
         }
 
-        // Render the course details view
-        CourseDetailsView::index($course);
+        $baseView = new CourseDetailsView($course);
+        (new BaseSkeletonView($course->getTitle(), $baseView))->render();
     }
 }

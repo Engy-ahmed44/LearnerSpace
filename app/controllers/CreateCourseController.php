@@ -8,7 +8,8 @@ use App\Core\ControllerHelpers;
 use App\DB\Entity\Course;
 use App\DB\Repository\CourseRepository;
 use App\DB\Entity\Tutor;
-use App\View\CreateCourse\CreateCourseView;
+use App\View\Common\BaseSkeletonView;
+use App\View\Course\CreateCourseView;
 
 class CreateCourseController extends Controller
 {
@@ -30,7 +31,8 @@ class CreateCourseController extends Controller
 
     public function index()
     {
-        CreateCourseView::index();
+        $baseView = new CreateCourseView();
+        (new BaseSkeletonView("Create New Course", $baseView))->render();
     }
 
     public function store()

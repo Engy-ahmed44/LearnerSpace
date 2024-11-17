@@ -6,49 +6,40 @@ use App\Core\View;
 
 class RegisterView extends View
 {
-    public static function showRegisterForm($data = [])
+    private String $error;
+
+    function __construct(String $error = null)
     {
-        // Extract data to use inside the view
-        extract($data);
+        $this->error = $error;
+    }
 
+    function render(): void
+    {
 ?>
-        <!DOCTYPE html>
-        <html lang="en">
+        <h2>Register</h2>
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Register</title>
-        </head>
+        <?php if (isset($error)): ?>
+            <p style="color:red;"><?php echo $error; ?></p>
+        <?php endif; ?>
 
-        <body>
-            <h2>Register</h2>
+        <form method="POST" action="/LearnerSpace/register">
+            <label for="email">Email</label>
+            <input type="email" name="email" required><br><br>
 
-            <?php if (isset($error)): ?>
-                <p style="color:red;"><?php echo $error; ?></p>
-            <?php endif; ?>
+            <label for="password">Password</label>
+            <input type="password" name="password" required><br><br>
 
-            <form method="POST" action="/LearnerSpace/register">
-                <label for="email">Email</label>
-                <input type="email" name="email" required><br><br>
+            <label for="user_type">User Type</label>
+            <select name="user_type" required>
+                <option value="student">Student</option>
+                <option value="tutor">Tutor</option>
+            </select><br><br>
 
-                <label for="password">Password</label>
-                <input type="password" name="password" required><br><br>
+            <button type="submit">Register</button>
+        </form>
 
-                <label for="user_type">User Type</label>
-                <select name="user_type" required>
-                    <option value="student">Student</option>
-                    <option value="tutor">Tutor</option>
-                </select><br><br>
+        <p>Already have an account? <a href="/LearnerSpace/login">Login here</a></p>
 
-                <button type="submit">Register</button>
-            </form>
-
-            <p>Already have an account? <a href="/LearnerSpace/login">Login here</a></p>
-
-        </body>
-
-        </html>
 <?php
     }
 }

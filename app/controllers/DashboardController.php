@@ -9,9 +9,9 @@ use App\DB\Entity\Student;
 use App\DB\Entity\Tutor;
 use App\DB\Repository\EventRepository;
 use App\DB\Repository\CommunityPostRepository;
+use App\View\Common\BaseSkeletonView;
 use App\View\Dashboard\DashboardView;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 class DashboardController extends Controller
 {
@@ -45,7 +45,7 @@ class DashboardController extends Controller
         // Get the latest community posts
         $communityPosts = CommunityPostRepository::get()->findLatestPosts();
 
-        // Render the view
-        DashboardView::index($courses, $events, $communityPosts);
+        $baseView = new DashboardView($courses, $events, $communityPosts);
+        (new BaseSkeletonView("Dashboard", $baseView))->render();
     }
 }

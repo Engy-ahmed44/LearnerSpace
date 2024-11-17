@@ -10,6 +10,7 @@ use App\DB\Entity\Student;
 use App\DB\Entity\Tutor;
 use App\DB\Repository\StudentRepository;
 use App\DB\Repository\TutorRepository;
+use App\View\Common\BaseSkeletonView;
 use App\View\Register\RegisterView;
 
 class RegisterController extends Controller
@@ -34,8 +35,8 @@ class RegisterController extends Controller
         if (ControllerHelpers::isPost()) {
             $this->register();
         } else {
-            // Call the static method from RegisterView to render the registration page
-            RegisterView::showRegisterForm();
+            $baseView = new RegisterView();
+            (new BaseSkeletonView("Register", $baseView))->render();
         }
     }
 
@@ -53,7 +54,9 @@ class RegisterController extends Controller
             // Validate inputs (example)
             if (empty($email) || empty($password) || empty($userType)) {
                 // Show registration form with error message
-                RegisterView::showRegisterForm(['error' => 'All fields are required.']);
+
+                $baseView = new RegisterView('All fields are required.');
+                (new BaseSkeletonView("Login", $baseView))->render();
                 return;
             }
 
@@ -84,8 +87,9 @@ class RegisterController extends Controller
                 // Redirect to login page or dashboard
                 ControllerHelpers::redirect('login');
             } else {
-                // Show registration form with error message if user type is invalid
-                RegisterView::showRegisterForm(['error' => 'Invalid user type.']);
+
+                $baseView = new RegisterView('Invalid user type.');
+                (new BaseSkeletonView("Login", $baseView))->render();
             }
         } else {
             // Redirect if not a POST request

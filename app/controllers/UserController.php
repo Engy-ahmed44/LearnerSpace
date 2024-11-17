@@ -6,7 +6,8 @@ use App\Core\Controller;
 use App\Core\ControllerHelpers;
 
 use App\Auth\AuthManager;
-
+use App\View\Common\BaseSkeletonView;
+use App\View\User\UserView;
 
 class UserController extends Controller
 {
@@ -19,7 +20,9 @@ class UserController extends Controller
 
     public function index()
     {
-        $this->view('user/index');
+
+        $baseView = new UserView(AuthManager::getInstance()->getUser());
+        (new BaseSkeletonView("Profile", $baseView))->render();
     }
 
     public function logout()

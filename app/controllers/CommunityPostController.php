@@ -8,6 +8,10 @@ use App\Core\ControllerHelpers;
 use App\DB\Entity\CommunityPost;
 use App\View\CommunityPost\CommunityPostView;
 use App\DB\Repository\CommunityPostRepository;
+use App\View\Common\BaseSkeletonView;
+use App\View\CommunityPost\CommunityPostsView;
+use App\View\CommunityPost\CreateCommunityPostView;
+use App\View\CommunityPost\ViewCommunityPostView;
 
 class CommunityPostController extends Controller
 {
@@ -23,8 +27,8 @@ class CommunityPostController extends Controller
         // Fetch all community posts
         $posts = $this->communityPostRepository->findAll();
 
-        // Call the view and pass the posts
-        CommunityPostView::index($posts);
+        $baseView = new CommunityPostsView($posts);
+        (new BaseSkeletonView("Posts", $baseView))->render();
     }
 
     public function view($postId)
@@ -32,16 +36,16 @@ class CommunityPostController extends Controller
         // Fetch the post by ID
         $post = $this->communityPostRepository->find($postId);
 
-        // Call the view and pass the post
-        CommunityPostView::viewPost($post);
+        $baseView = new ViewCommunityPostView($post);
+        (new BaseSkeletonView($post->getTitle(), $baseView))->render();
     }
 
 
     // Display the form to create a new post
     public function create(): void
     {
-        // Call the view and pass the post
-        CommunityPostView::createView();
+        $baseView = new CreateCommunityPostView();
+        (new BaseSkeletonView("Create Post", $baseView))->render();
     }
 
     // Handle form submission for creating a new post

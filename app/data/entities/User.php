@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 #[ORM\DiscriminatorMap(['tutor' => Tutor::class, 'student' => Student::class])]
 class User
 {
+
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
