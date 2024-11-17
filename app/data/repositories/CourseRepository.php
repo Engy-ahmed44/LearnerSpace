@@ -7,7 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Course>
+ * @extends BaseRepository<Course>
  */
 class CourseRepository extends BaseRepository
 {
