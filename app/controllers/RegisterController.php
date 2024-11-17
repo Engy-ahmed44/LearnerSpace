@@ -6,11 +6,17 @@ use App\Core\Controller;
 use App\Core\ControllerHelpers;
 
 use App\Auth\AuthManager;
-use App\Auth\Strategy\EmailStrategy;
-use App\DB\Repository\UserRepository;
+use App\DB\Entity\Student;
+use App\DB\Entity\Tutor;
+use App\DB\Repository\StudentRepository;
+use App\DB\Repository\TutorRepository;
+use App\View\Register\RegisterView;
 
 class RegisterController extends Controller
 {
+    /**
+     * Called after the request is received.
+     */
     public function onCall()
     {
         if (AuthManager::getInstance()->isAuthenticated()) {
@@ -18,32 +24,72 @@ class RegisterController extends Controller
         }
     }
 
+
+    /**
+     * Show the registration view.
+     */
     public function index()
     {
 
         if (ControllerHelpers::isPost()) {
             $this->register();
         } else {
-            // Render the login view
-            $this->view('register/index');
+            // Call the static method from RegisterView to render the registration page
+            RegisterView::showRegisterForm();
         }
     }
 
-    public function register()
+    /**
+     * Handle student or tutor registration.
+     */
+    private function register()
     {
-        // Get sanitized input data
-        $email = ControllerHelpers::post('email');
-        $password = ControllerHelpers::post('password');
+        if (ControllerHelpers::isPost()) {
+            // Get sanitized input data
+            $email = ControllerHelpers::post('email');
+            $password = ControllerHelpers::post('password');
+            $userType = ControllerHelpers::post('user_type'); // 'student' or 'tutor'
 
-        $user = UserRepository::get()->register($email, $password);
+            // Validate inputs (example)
+            if (empty($email) || empty($password) || empty($userType)) {
+                // Show registration form with error message
+                RegisterView::showRegisterForm(['error' => 'All fields are required.']);
+                return;
+            }
 
-        if ($user) {
-            $strategy = new EmailStrategy($email, $password);
-            $authResult = AuthManager::getInstance()->setStrategy($strategy)->authenticate();
+            // Check if user type is student or tutor
+            if ($userType === 'student') {
+                // Create student object and register
+                $student = new Student();
+                $student->setEmail($email);
+                $student->setPassword($password); // Consider hashing the password before storing
+                // Save the student (you can implement save logic in the Student model)
+                $studentRepository = StudentRepository::get();
+                $studentRepository->register($student);
 
-            ControllerHelpers::redirect('dashboard');
+                // Optionally, enroll the student in some courses
+                // $courseRepository->enrollStudentInDefaultCourses($student);
+
+                // Redirect to login page or dashboard
+                ControllerHelpers::redirect('login');
+            } elseif ($userType === 'tutor') {
+                // Create tutor object and register
+                $tutor = new Tutor();
+                $tutor->setEmail($email);
+                $tutor->setPassword($password); // Consider hashing the password before storing
+                // Save the tutor (you can implement save logic in the Tutor model)
+                $tutorRepository = TutorRepository::get();
+                $tutorRepository->register($tutor);
+
+                // Redirect to login page or dashboard
+                ControllerHelpers::redirect('login');
+            } else {
+                // Show registration form with error message if user type is invalid
+                RegisterView::showRegisterForm(['error' => 'Invalid user type.']);
+            }
         } else {
-            $this->view('register/index', ['error' => 'Error registering.']);
+            // Redirect if not a POST request
+            ControllerHelpers::redirect('register');
         }
     }
 }
