@@ -6,9 +6,9 @@ use App\Core\View;
 
 class RegisterView extends View
 {
-    private String $error;
+    private ?String $error;
 
-    function __construct(String $error = null)
+    function __construct(?String $error = null)
     {
         $this->error = $error;
     }
